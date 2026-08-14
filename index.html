@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Muelle Fashion | Bespoke Tailoring Atelier</title>
+  <!-- Fonts: elegant serif + clean sans-serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #FBF7F2;
+      font-family: 'Inter', sans-serif;
+      color: #3B2E24;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* subtle noise texture overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.035"/></svg>');
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.2;
+    }
+
+    h1, h2, h3, .serif {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 5vw;
+    }
+
+    /* ----- NAVIGATION ----- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 5vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      transition: all 0.4s ease;
+      background-color: rgba(251, 247, 242, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid rgba(168, 138, 115, 0.15);
+    }
+
+    .navbar.scrolled {
+      padding: 1rem 5vw;
+      background-color: rgba(251, 247, 242, 0.92);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.02);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: #3B2E24;
+      text-transform: uppercase;
+      line-height: 1;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #3B2E24;
+      font-weight: 400;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: #A88A73;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: transparent;
+      border: 1px solid #6B5A4B;
+      color: #3B2E24;
+      padding: 0.6rem 1.8rem;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(4px);
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-cta:hover {
+      background-color: #3B2E24;
+      color: #FBF7F2;
+      border-color: #3B2E24;
+    }
+
+    /* mobile menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 24px;
+      height: 1.5px;
+      background: #3B2E24;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: rgba(251, 247, 242, 0.98);
+      backdrop-filter: blur(20px);
+      padding: 2rem 5vw;
+      flex-direction: column;
+      gap: 1.5rem;
+      z-index: 99;
+      border-bottom: 1px solid rgba(168, 138, 115, 0.2);
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      text-decoration: none;
+      color: #3B2E24;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+    }
+
+    /* ----- HERO SECTION ----- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 6rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 40%, rgba(235, 222, 203, 0.4) 0%, rgba(251, 247, 242, 0) 70%);
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      font-weight: 500;
+      line-height: 1.1;
+      color: #3B2E24;
+      margin-bottom: 1.2rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease forwards;
+    }
+
+    .hero-tagline {
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #5F4C3B;
+      margin-bottom: 0.6rem;
+      font-style: italic;
+      letter-spacing: 0.5px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.15s ease forwards;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #7A6655;
+      margin-bottom: 2.8rem;
+      letter-spacing: 1px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.3s ease forwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.45s ease forwards;
+    }
+
+    .btn-primary {
+      background: #3B2E24;
+      border: none;
+      color: #FBF7F2;
+      padding: 1rem 2.8rem;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #3B2E24;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      background: #5F4C3B;
+      border-color: #5F4C3B;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #6B5A4B;
+      color: #3B2E24;
+      padding: 1rem 2.8rem;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(59,46,36,0.05);
+    }
+
+    .hero-image-container {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      opacity: 0;
+      animation: softImageReveal 1.2s 0.3s ease forwards;
+    }
+
+    .designer-photo {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 40% 60% 50% 50% / 45% 45% 55% 55%;
+      box-shadow: 20px 20px 50px rgba(107, 90, 75, 0.08);
+      filter: brightness(1.02) contrast(1.02);
+      background: #d9cfc0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="80" r="40" fill="%23b8a084" opacity="0.3"/><ellipse cx="100" cy="160" rx="55" ry="30" fill="%23b8a084" opacity="0.2"/></svg>');
+      background-size: cover;
+      background-position: center;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes softImageReveal {
+      0% { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ----- SECTIONS GENERAL ----- */
+    section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #A88A73;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    /* INTRODUCTION */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .intro-text h2 {
+      font-size: 3rem;
+      font-weight: 500;
+      margin-bottom: 1.8rem;
+      color: #3B2E24;
+    }
+
+    .intro-text p {
+      font-size: 1.1rem;
+      color: #5F4C3B;
+      line-height: 1.7;
+      max-width: 90%;
+    }
+
+    .intro-image {
+      background: #e7dbcc;
+      height: 380px;
+      border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.2"><path d="M70 40 Q120 10 160 50 T140 130 Q90 160 50 120 T70 40" fill="%23b8a084"/></svg>');
+      background-size: cover;
+      opacity: 0.9;
+    }
+
+    /* PROCESS */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .step-item {
+      border-top: 1px solid #CBB9A7;
+      padding-top: 2rem;
+    }
+
+    .step-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      color: #A88A73;
+      font-weight: 500;
+    }
+
+    .step-title {
+      font-weight: 500;
+      margin: 0.8rem 0 0.6rem;
+      font-size: 1.3rem;
+    }
+
+    /* PORTFOLIO GLIMPSE */
+    .glimpse-layout {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .large-image {
+      width: 500px;
+      height: 550px;
+      background: #d9ccbc;
+      border-radius: 70% 30% 50% 50% / 40% 50% 50% 60%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M45 30 Q120 5 160 70 T130 160 Q70 180 30 120 T45 30" fill="%23b2977a" opacity="0.25"/></svg>');
+      background-size: cover;
+    }
+
+    .small-image {
+      width: 280px;
+      height: 350px;
+      background: #cbb5a0;
+      border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+      margin-top: -2rem;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><circle cx="70" cy="70" r="50" fill="%23997b62" opacity="0.2"/></svg>');
+      background-size: cover;
+    }
+
+    .caption {
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: #6B5A4B;
+      margin-top: 1rem;
+      text-transform: uppercase;
+    }
+
+    /* WHY SECTION */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+
+    .why-item {
+      border-bottom: 1px solid #DDD0C0;
+      padding-bottom: 2rem;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: #3B2E24;
+      color: #FBF7F2;
+      text-align: center;
+      padding: 6rem 2rem;
+      border-radius: 2rem 2rem 0 0;
+      margin-top: 3rem;
+    }
+
+    .cta-section h2 {
+      font-size: 3.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section .btn-primary {
+      background: #FBF7F2;
+      color: #3B2E24;
+      border-color: #FBF7F2;
+    }
+
+    .cta-section .btn-primary:hover {
+      background: #e8e0d5;
+      border-color: #e8e0d5;
+    }
+
+    .cta-section .btn-secondary {
+      border-color: #FBF7F2;
+      color: #FBF7F2;
+    }
+
+    .cta-section .btn-secondary:hover {
+      background: rgba(251,247,242,0.1);
+    }
+
+    /* CONTACT FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    input, textarea {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid #CBB9A7;
+      padding: 1rem;
+      font-family: 'Inter', sans-serif;
+      width: 100%;
+      color: #3B2E24;
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #8B7A6B;
+      background: rgba(255,255,255,0.95);
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .whatsapp-link {
+      color: #5F4C3B;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .whatsapp-link:hover {
+      color: #25D366;
+    }
+
+    /* Success message */
+    .success-message {
+      display: none;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #8B7A6B;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-content, .intro-grid {
+        grid-template-columns: 1fr;
+      }
+      .process-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .designer-photo {
+        max-width: 320px;
+        margin: 0 auto;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .full-width {
+        grid-column: span 1;
+      }
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+      .glimpse-layout {
+        flex-direction: column;
+      }
+      .large-image {
+        width: 100%;
+        height: 400px;
+      }
+      .small-image {
+        width: 80%;
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="logo">MUELLE FASHION</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#work">Our Work</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Start Your Design</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#work">Our Work</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-cta" style="display: inline-block; margin-top: 1rem;">Start Your Design</a>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <h1>MUELLE<br>FASHION</h1>
+          <p class="hero-tagline">Your vision, beautifully tailored.</p>
+          <p class="hero-sub">Bespoke fashion designed around you.</p>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn-primary">Start Your Design</a>
+            <a href="#work" class="btn-secondary">Explore Our Work</a>
+          </div>
+        </div>
+        <div class="hero-image-container">
+          <img src="designer.jpeg.jpeg" alt="Muelle Fashion designer" class="designer-photo">
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRODUCTION -->
+    <section id="about">
+      <div class="container intro-grid">
+        <div class="intro-text">
+          <div class="section-label">Made for You</div>
+          <h2>At Muelle Fashion, every piece begins with an idea.</h2>
+          <p>From the first concept to the final stitch, we create custom garments designed around your style, your measurements, and your vision. This is not a store — it's a personal fashion experience.</p>
+        </div>
+       <img src="madeforyou.jpeg.jpeg" alt="Made For You" class="small-image">
+      </div>
+    </section>
+
+    <!-- BESPOKE PROCESS -->
+    <section id="process" style="background: rgba(235,222,203,0.25);">
+      <div class="container">
+        <div class="section-label">The Bespoke Process</div>
+        <div class="process-grid">
+          <div class="step-item"><span class="step-number">01</span><h3 class="step-title">Tell Us Your Vision</h3><p>Share the outfit, idea, or reference you have in mind.</p></div>
+          <div class="step-item"><span class="step-number">02</span><h3 class="step-title">Design & Discuss</h3><p>Refine design, fabric, fit, and details together.</p></div>
+          <div class="step-item"><span class="step-number">03</span><h3 class="step-title">Crafted For You</h3><p>Carefully cut, sewn, and tailored to your measurements.</p></div>
+          <div class="step-item"><span class="step-number">04</span><h3 class="step-title">Wear Your Vision</h3><p>A garment created around your personality and style.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GLIMPSE OF OUR CRAFT -->
+    <section id="work">
+      <div class="container">
+        <div class="section-label">A Glimpse of Our Craft</div>
+        <div class="glimpse-layout">
+          <div>
+           <img src="craft.jpeg.jpeg" alt="Bespoke Craftsmanship" class="large-image">
+            <div class="caption">Bespoke Craftsmanship</div>
+          </div>
+          <div>
+            <img src="intention.jpeg.jpeg" alt="Designed with Intention" class="small-image">
+            <div class="caption">Designed With Intention</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY MUELLE -->
+    <section style="background: #F7F0E8;">
+      <div class="container">
+        <div class="section-label">Why Muelle Fashion</div>
+        <div class="why-grid">
+          <div class="why-item"><h3>Custom Fit</h3><p>Every garment is created around the individual client.</p></div>
+          <div class="why-item"><h3>Personal Design</h3><p>Your outfit begins with your own vision and preferences.</p></div>
+          <div class="why-item"><h3>Attention to Detail</h3><p>Every cut, stitch, and finishing detail matters.</p></div>
+          <div class="why-item"><h3>Made With Intention</h3><p>No mass-produced pieces. Every garment is created specifically for its wearer.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section" id="cta">
+      <h2>Have an outfit in mind?</h2>
+      <p style="margin:1.5rem 0 2rem; font-weight:300;">Let's turn your idea into something made just for you.</p>
+      <a href="#contact" class="btn-primary" style="margin-right:1rem;">Start Your Custom Order</a>
+      <a href="#contact" class="btn-secondary">Contact Muelle Fashion</a>
+    </div>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-label">Enquiry</div>
+        <form class="form-grid" id="inquiryForm" action="https://formspree.io/f/xgawyovz" method="POST">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="text" name="phone" placeholder="Phone / WhatsApp" required>
+          <input type="email" name="email" placeholder="Email" class="full-width" required>
+          <input type="text" name="garment" placeholder="What would you like made?" class="full-width" required>
+          <input type="text" name="occasion" placeholder="Preferred occasion">
+          <input type="text" name="reference" placeholder="Reference / inspiration">
+          <textarea name="details" rows="4" placeholder="Additional details" class="full-width"></textarea>
+          <div class="full-width" style="display:flex; gap:1rem; align-items:center; flex-wrap: wrap;">
+            <button type="submit" class="btn-primary">Send Enquiry</button>
+            <span style="color:#5F4C3B;">or <a href="https://wa.me/2349031866525" target="_blank" rel="noopener" class="whatsapp-link">via WhatsApp</a></span>
+          </div>
+          <div class="success-message full-width" id="successMessage">
+            ✓ Thank you for your Enquiry! We'll be in touch shortly.
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>© 2026 Muelle Fashion — Bespoke tailoring atelier</p>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 30) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    
+      
+      // Get form data// Form submission handling
+    const form = document.getElementById('inquiryForm');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      successMessage.style.display = 'block';
+
+      form.reset();
+
+      successMessage.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 5000);
+
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+
+  } catch (error) {
+    alert('Something went wrong. Please check your connection and try again.');
+    console.error(error);
+  }
+});
+      
+      // Scroll to success message
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Scroll-triggered fade animations for sections (luxury subtle)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.transition = 'opacity 0.9s ease, transform 0.8s ease';
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+        } else {
+          entry.target.style.opacity = 0;
+          entry.target.style.transform = 'translateY(12px)';
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.step-item, .why-item, .intro-text, .glimpse-layout > div').forEach(el => {
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(12px)';
+      observer.observe(el);
+    });
+
+    const whatsappLink = document.querySelector('.whatsapp-link');
+    if (whatsappLink) {
+      whatsappLink.href = 'https://wa.me/2349031866525?text=Hello%20Muelle%20Fashion%2C%20I%20would%20like%20to%20discuss%20a%20custom%20design.';
+    }
+  </script>
+</body>
+</html>
